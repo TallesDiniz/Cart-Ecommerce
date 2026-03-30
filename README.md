@@ -1,73 +1,185 @@
-# React + TypeScript + Vite
+# 🛒 Cart Ecommerce
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce shopping cart application built with **React**, **TypeScript**, and **Context API** to manage cart state globally across the application.
 
-Currently, two official plugins are available:
+🔗 **Live Demo:** [cart-ecommerce-delta.vercel.app](https://cart-ecommerce-delta.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 📋 Table of Contents
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [About](#-about)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Available Scripts](#-available-scripts)
+- [How It Works](#-how-it-works)
+- [Author](#-author)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📖 About
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Cart Ecommerce is a study project focused on practicing **React Context API** to simulate a real-world shopping cart experience. The app fetches products from a local JSON server, allows users to add and remove items from the cart, and displays the total price in real time.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## ✨ Features
+
+- 🛍️ Product listing page with grid layout
+- 🔍 Product detail page by ID (`/product/:id`)
+- 🛒 Add and remove items from the cart
+- 💰 Real-time cart total calculation
+- 🔔 Toast notifications for user feedback
+- 📱 Fully responsive layout (mobile, tablet, desktop)
+- 🌐 Client-side routing with React Router DOM
+
+---
+
+## 🚀 Tech Stack
+
+| Technology | Version | Purpose |
+|---|---|---|
+| React | ^19.2.4 | UI library |
+| TypeScript | ~5.9.3 | Static typing |
+| Vite | ^8.0.1 | Build tool & dev server |
+| Tailwind CSS | ^4.2.2 | Utility-first styling |
+| React Router DOM | ^7.13.2 | Client-side routing |
+| Axios | ^1.14.0 | HTTP requests |
+| JSON Server | ^1.0.0-beta.15 | Mock REST API |
+| React Hot Toast | ^2.6.0 | Toast notifications |
+| React Icons | ^5.6.0 | Icon library |
+
+---
+
+## 📁 Project Structure
+
+```
+Cart-Ecommerce/
+├── public/
+├── src/
+│   ├── components/        # Reusable components (Header, etc.)
+│   ├── context/
+│   │   └── CartContext.tsx  # Global cart state with Context API
+│   ├── pages/
+│   │   ├── home/          # Product listing page
+│   │   └── product/       # Product detail page by ID
+│   ├── services/
+│   │   └── api.ts         # Axios instance configuration
+│   ├── App.tsx            # Route definitions
+│   └── main.tsx           # App entry point
+├── db.json                # Mock database for JSON Server
+├── package.json
+├── vite.config.ts
+└── tsconfig.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🏁 Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+Make sure you have installed:
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/TallesDiniz/Cart-Ecommerce.git
+cd Cart-Ecommerce
 ```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Start the JSON Server (mock API)**
+
+```bash
+npx json-server db.json --port 3000
+```
+
+4. **Start the development server** (in a new terminal)
+
+```bash
+npm run dev
+```
+
+5. **Open in your browser**
+
+```
+http://localhost:5173
+```
+
+---
+
+## 📜 Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run ESLint |
+
+---
+
+## ⚙️ How It Works
+
+### Context API — Cart State
+
+The cart state is managed globally via React's Context API. The `CartContext` provides the following to all components:
+
+```ts
+interface CartContextProps {
+  cart: ProductsProps[];           // Items currently in the cart
+  addItemCart: (product) => void;  // Add a product to the cart
+  removeItemCart: (id) => void;    // Remove a product from the cart
+  total: string;                   // Formatted total price (BRL)
+}
+```
+
+### Routing
+
+| Route | Component | Description |
+|---|---|---|
+| `/` | `Home` | Lists all products from the API |
+| `/product/:id` | `ProductDetail` | Shows details of a specific product |
+
+### Mock API
+
+Products are served locally by **JSON Server** from `db.json`. The Axios instance in `src/services/api.ts` points to `http://localhost:3000`.
+
+```json
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Product Name",
+      "description": "Product description",
+      "price": 99.90,
+      "cover": "https://image-url.com/image.jpg"
+    }
+  ]
+}
+```
+
+---
+
+## 👤 Author
+
+**Talles Diniz**
+
+- GitHub: [@TallesDiniz](https://github.com/TallesDiniz)
+
+---
+
+> This project was developed for learning purposes, focused on practicing React Context API, TypeScript, and component-driven architecture.
