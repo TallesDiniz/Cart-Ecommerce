@@ -1,7 +1,9 @@
-import { useState, useEffect, useContext} from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { BsCartPlus } from 'react-icons/bs'
 import { api } from '../../services/api'
-import {CartContext} from '../../context/CartContext';
+import { CartContext } from '../../context/CartContext';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 export interface ProductsProps {
     id: number;
@@ -12,7 +14,7 @@ export interface ProductsProps {
 }
 
 export function Home() {
-    const {addItemCart} = useContext(CartContext);
+    const { addItemCart } = useContext(CartContext);
     const [products, setProducts] = useState<ProductsProps[]>([])
 
     useEffect(() => {
@@ -24,6 +26,13 @@ export function Home() {
     }, [])
 
     function handleAddCartItem(product: ProductsProps) {
+        toast.success('Produto adicionado ao carrinho!', {
+            style: {
+                borderRadius: 10,
+                backgroundColor: '#121212',
+                color: '#fff'
+            }
+        })
         addItemCart(product)
     }
 
@@ -34,11 +43,14 @@ export function Home() {
                 <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-5'>
                     {products.map((product) => (
                         <section key={product.id} className='w-full'>
-                            <img
-                                className='w-full rounded-lg max-h-70 mb-2'
-                                src={product.cover}
-                                alt={product.title}
-                            />
+                            <Link to={`/product/${product.id}`}>
+                                <img
+                                    className='w-full rounded-lg max-h-70 mb-2 transform transition duration-300 hover:scale-110'
+                                    src={product.cover}
+                                    alt={product.title}
+                                />
+                            </Link>
+
                             <p className='font-medium mt-1 mb-2'>{product.title}</p>
 
                             <div className='flex gap-3 items-center'>
@@ -47,7 +59,7 @@ export function Home() {
                                         style: 'currency', currency: 'BRL'
                                     })}
                                 </strong>
-                                <button className='bg-zinc-900 p-1 rounded' onClick={() => handleAddCartItem(product)}>
+                                <button className='bg-zinc-900 p-1 rounded cursor-pointer' onClick={() => handleAddCartItem(product)}>
                                     <BsCartPlus size={20} color="#fff" />
                                 </button>
                             </div>
